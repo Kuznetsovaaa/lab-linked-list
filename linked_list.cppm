@@ -22,6 +22,60 @@ class LinkedList {
     size_ = 0;
   }
 
+  void PushTail(const T& value) {
+    Node* new_node = new Node(value);
+    new_node->prev = tail_;
+    if (tail_ != nullptr) {
+      tail_->next = new_node;
+    } else {
+      head_ = new_node;
+    }
+    tail_ = new_node;
+    ++size_;
+  }
+
+  void PushHead(const T& value) {
+    Node* new_node = new Node(value);
+    new_node->next = head_;
+    if (head_ != nullptr) {
+      head_->prev = new_node;
+    } else {
+      tail_ = new_node;
+    }
+    head_ = new_node;
+    ++size_;
+  }
+
+  void PopHead() {
+    if (head_ == nullptr) {
+      throw std::out_of_range("PopHead: list is empty");
+    }
+    Node* old_head = head_;
+    head_ = head_->next;
+    if (head_ != nullptr) {
+      head_->prev = nullptr;
+    } else {
+      tail_ = nullptr;
+    }
+    delete old_head;
+    --size_;
+  }
+
+  void PopTail() {
+    if (tail_ == nullptr) {
+      throw std::out_of_range("PopTail: list is empty");
+    }
+    Node* old_tail = tail_;
+    tail_ = tail_->prev;
+    if (tail_ != nullptr) {
+      tail_->next = nullptr;
+    } else {
+      head_ = nullptr;
+    }
+    delete old_tail;
+    --size_;
+  }
+
  private:
   struct Node {
     T value;
